@@ -1,7 +1,0 @@
-ipykernel
-opencv-python
-scikit-learn
-pandas
-plotly
-nbformat>=4.2.0
-pyarrow
