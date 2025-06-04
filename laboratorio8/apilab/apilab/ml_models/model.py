@@ -4,13 +4,14 @@ from typing import Any
 
 from apilab.models.ml import MLModel, MLModelIn
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "../models/artifacts/model.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "best_model.pkl")
 
 
 class MLModelService:
     _instance = None
 
-    def __init__(self):
+    def __init__(self, model_path: str = MODEL_PATH):
+        self.model_path = model_path
         self.model = self._load_model()
 
     @classmethod
@@ -20,7 +21,8 @@ class MLModelService:
         return cls._instance
 
     def _load_model(self) -> Any:
-        with open(MODEL_PATH, "rb") as f:
+        print(f"Loading model from {self.model_path}: {os.getcwd()}")
+        with open(os.path.join(os.getcwd(), self.model_path), "rb") as f:
             model = pickle.load(f)
         return model
 
