@@ -1,0 +1,16 @@
+# Ignora carpetas y archivos de control de versiones y desarrollo
+.git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb
+*.log
+*.md
+*.DS_Store
+.vscode/
+.env
+*.egg-info/
+tests/
+data
+.giti

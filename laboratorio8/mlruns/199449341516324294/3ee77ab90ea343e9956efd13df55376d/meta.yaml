@@ -1,0 +1,15 @@
+artifact_uri: file:///home/marcosignacio/desktop/repos/MDS7202labs/laboratorio8/mlruns/199449341516324294/3ee77ab90ea343e9956efd13df55376d/artifacts
+end_time: 1748997140854
+entry_point_name: ''
+experiment_id: '199449341516324294'
+lifecycle_stage: active
+run_id: 3ee77ab90ea343e9956efd13df55376d
+run_name: XGBoost-lr0.0293-d3
+run_uuid: 3ee77ab90ea343e9956efd13df55376d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748997138837
+status: 3
+tags: []
+user_id: marcosignacio

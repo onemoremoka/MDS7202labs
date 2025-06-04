@@ -1,0 +1,6 @@
+artifact_location: file:///home/marcosignacio/desktop/repos/MDS7202labs/laboratorio8/mlruns/199449341516324294
+creation_time: 1748992278761
+experiment_id: '199449341516324294'
+last_update_time: 1748992278761
+lifecycle_stage: active
+name: XGBoost_Water_Potability

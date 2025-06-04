@@ -1,0 +1,15 @@
+artifact_uri: file:///home/marcosignacio/desktop/repos/MDS7202labs/laboratorio8/mlruns/199449341516324294/9d7a02b833304f749c717d5c1a217251/artifacts
+end_time: 1748997245091
+entry_point_name: ''
+experiment_id: '199449341516324294'
+lifecycle_stage: active
+run_id: 9d7a02b833304f749c717d5c1a217251
+run_name: Optuna_Optimization
+run_uuid: 9d7a02b833304f749c717d5c1a217251
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748997131917
+status: 3
+tags: []
+user_id: marcosignacio
