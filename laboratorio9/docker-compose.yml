@@ -1,0 +1,41 @@
+services:
+  airflow-init:
+    build: .
+    image: lab9:latest
+    container_name: airflow_init
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow standalone
+      "
+    volumes:
+      - ./dags:/root/airflow/dags
+      - ./airflow_data:/root/airflow         # <-- nuevo
+    environment:
+      - AIRFLOW_HOME=/root/airflow
+
+  scheduler:
+    image: lab9:latest
+    container_name: airflow_scheduler
+    depends_on:
+      - airflow-init
+    command: airflow scheduler
+    volumes:
+      - ./dags:/root/airflow/dags
+      - ./airflow_data:/root/airflow
+    environment:
+      - AIRFLOW_HOME=/root/airflow
+
+  web:
+    image: lab9:latest
+    container_name: airflow_web
+    depends_on:
+      - airflow-init
+    command: airflow api-server -p 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/root/airflow/dags
+      - ./airflow_data:/root/airflow
+    environment:
+      - AIRFLOW_HOME=/root/airflow
