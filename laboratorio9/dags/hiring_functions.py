@@ -9,19 +9,19 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score
 import gradio as gr
 from sklearn.preprocessing import StandardScaler
-
+import io
 
 # 1. Crear carpetas para cada ejecución
 def create_folders(**kwargs):
     execution_date = kwargs['ds']  # yyyy-mm-dd
-    os.makedirs("dags/output", exist_ok=True)  # Aseguramos que la carpeta output exista
-    base_path = f"dags/output/{execution_date}"
-    os.makedirs(base_path, exist_ok=True)
+    os.makedirs("dags", exist_ok=True)  # Aseguramos que la carpeta output exista
+    base_path = f"dags/{execution_date}"
 
     raw_path = os.path.join(base_path, "raw")
     splits_path = os.path.join(base_path, "splits")
     models_path = os.path.join(base_path, "models")
 
+    os.makedirs(base_path, exist_ok=True)
     os.makedirs(raw_path, exist_ok=True)
     os.makedirs(splits_path, exist_ok=True)
     os.makedirs(models_path, exist_ok=True)
@@ -30,22 +30,23 @@ def create_folders(**kwargs):
 # 2. Hold-out del dataset
 def split_data(**kwargs):
     execution_date = kwargs['ds']
-    base_path = f"dags/output/{execution_date}"
-    raw_path = os.path.join(base_path, "raw")
-    splits_path = os.path.join(base_path, "splits")
-    
+    raw_path = os.path.join("dags", execution_date, "raw")
+    splits_path = os.path.join("dags", execution_date, "splits")
+
     df = pd.read_csv(os.path.join(raw_path, "data_1.csv"))
 
     X = df.drop("HiringDecision", axis=1)
     y = df["HiringDecision"]
 
+    # genero un hold-out del 80% de los datos para entrenamiento y 20% para test
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2,random_state=42
     )
 
     X_train.to_csv(os.path.join(splits_path, "X_train.csv"), index=False)
-    X_test.to_csv(os.path.join(splits_path, "X_test.csv"), index=False)
     y_train.to_csv(os.path.join(splits_path, "y_train.csv"), index=False)
+    
+    X_test.to_csv(os.path.join(splits_path, "X_test.csv"), index=False)
     y_test.to_csv(os.path.join(splits_path, "y_test.csv"), index=False)
 
     print("Datos divididos correctamente.")
@@ -54,9 +55,9 @@ def split_data(**kwargs):
 # 3. Preprocesamiento + Entrenamiento Random Forest + Guardar modelo
 def preprocess_and_train(**kwargs):
     execution_date = kwargs['ds']
-    base_path = f"dags/output/{execution_date}"
-    splits_path = os.path.join(base_path, "splits")
-    models_path = os.path.join(base_path, "models")
+    model_path = os.path.join("dags", execution_date, "models")
+    splits_path = os.path.join("dags", execution_date, "splits")
+    
 
     # Cargar datos
     X_train = pd.read_csv(os.path.join(splits_path, "X_train.csv"))
@@ -64,7 +65,7 @@ def preprocess_and_train(**kwargs):
     y_train = pd.read_csv(os.path.join(splits_path, "y_train.csv")).values.ravel()
     y_test = pd.read_csv(os.path.join(splits_path, "y_test.csv")).values.ravel()
 
-    # Preprocesamiento
+    # Preprocesamiento basico
     numeric_features = ['Age', 'ExperienceYears', 'PreviousCompanies', 'DistanceFromCompany', 
                         'InterviewScore', 'SkillScore', 'PersonalityScore','Gender', 'EducationLevel', 'RecruitmentStrategy'] 
 
@@ -94,23 +95,25 @@ def preprocess_and_train(**kwargs):
     print(f"F1-score (Contratado): {f1:.4f}")
 
     # Guardar modelo
-    model_path = os.path.join(models_path, "hiring_model.joblib")
-    joblib.dump(pipeline, model_path)
-    print(f"Modelo guardado en: {model_path}")
+    model_path_joblib = os.path.join(model_path, "hiring_model.joblib")
+    joblib.dump(pipeline, model_path_joblib)
+    print(f"Modelo guardado en: {model_path_joblib}")
 
+#enunciado
 def predict_interface(file, model_path):
     pipeline = joblib.load(model_path)
-    input_data = pd.read_json(file)
+    # ¡Lee el contenido del archivo directamente, sin .name!
+    input_data = pd.read_json(io.BytesIO(file.read()))
     predictions = pipeline.predict(input_data)
-    print(f'La predicción es: {predictions}')
     labels = ["No contratado" if pred == 0 else "Contratado" for pred in predictions]
-
     return {
         'Predicción': labels[0]
-        }
+    }
 
-
-def gradio_interface(model_path):
+def gradio_interface(ds, **kwargs):
+    print(f"Creando interfaz Gradio para el DAG con fecha {ds}")
+    model_path = f"dags/{ds}/models/hiring_model.joblib"
+    print(f"existe la ruta del modelo: {os.path.exists(model_path)}")
     interface = gr.Interface(
         fn=lambda file: predict_interface(file, model_path),
         inputs=gr.File(label="Sube un archivo JSON"),
@@ -118,4 +121,4 @@ def gradio_interface(model_path):
         title="Hiring Decision Prediction",
         description="Sube un archivo JSON con las características de entrada para predecir si Vale será contratada o no."
     )
-    interface.launch(share=True)
+    interface.launch(server_name="0.0.0.0", server_port=7860, share=True)

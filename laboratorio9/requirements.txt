@@ -1,3 +1,4 @@
 kagglehub
 joblib
 gradio
+email-validator>=2.0
