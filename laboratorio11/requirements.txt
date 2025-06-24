@@ -1,0 +1,17 @@
+gymnasium[box2d]==0.29.1
+
+
+stable_baselines3
+swig
+
+ipykernel
+ipywidgets
+
+imageio
+#torch pre-release por consola
+#conda install libstdcxx-ng
+
+#langchain
+langchain==0.0.308
+langchain-community==0.0.308
+tavily-python
