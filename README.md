@@ -1,6 +1,6 @@
 # MDS7202labs
 
-Repositorio de trabajos semanales para el curso **MDS7202: Laboratorio de Programación Científica para Ciencia de Datos**. Aquí encontrarás los laboratorios desarrollados durante el semestre, cada uno enfocado en diferentes tópicos fundamentales para la ciencia de datos aplicada.
+Repositorio de trabajos semanales para el curso **MDS7202: Laboratorio de Programación Científica para Ciencia de Datos**. Aquí se encuentran los laboratorios desarrollados durante el semestre, cada uno enfocado en diferentes tópicos fundamentales para la ciencia de datos aplicada.
 
 ## Integrantes
 - Marcos Ignacio Huenchumil Illanes
@@ -24,6 +24,10 @@ Este repositorio contiene los trabajos prácticos semanales realizados en el mar
 - **Laboratorio 5:** Algoritmos de clasificación supervisada (XGBoost, LightGBM), manejo de clases desbalanceadas, métricas de evaluación y selección de características.
 - **Laboratorio 6:** Optimización de modelos: predicción de demanda con XGBoost, uso de pipelines, búsqueda de hiperparámetros óptimos con Optuna, constraints de monotonicidad y técnicas de pruning para acelerar la búsqueda de modelos.
 - **Laboratorio 7:** Interpretabilidad de modelos: clasificación con XGBoost, métodos agnósticos globales (Partial Dependence Plot, Permutation Feature Importance), métodos agnósticos locales (Scoped Rules, SHAP), generación de reglas interpretables y análisis de explicabilidad en modelos de machine learning.
+- **Laboratorio 8:** Despliegue de modelos de machine learning: entrenamiento y registro de modelos con MLFlow, despliegue usando FastAPI y containerización con Docker.
+- **Laboratorio 9:** Automatización y orquestación de pipelines de ciencia de datos usando Apache Airflow y Docker.
+- **Laboratorio 10:** Series de tiempo y sistemas de recomendación: análisis de series de tiempo con Prophet y construcción de sistemas de recomendación con Surprise.
+- **Laboratorio 11:** Resolución de problemas secuenciales con Reinforcement Learning y habilitación de chatbots usando Large Language Models.
 
 ## Instrucciones de uso
 
@@ -36,8 +40,5 @@ Este repositorio contiene los trabajos prácticos semanales realizados en el mar
    pip install -r requirements.txt
    ```
 3. Abre los notebooks de cada laboratorio en tu entorno favorito (recomendado: Visual Studio Code o Jupyter Notebook).
-4. Sigue las instrucciones y resuelve los ejercicios propuestos en cada notebook.
 
-## Enlaces útiles
-
-- [Repositorio en GitHub](https://github.com/onemoremoka/MDS7202labs)
+Algunos laboratorios (particularmente el 8 y 9) contienen aplicaciones desplegadas con Docker Compose para simular entornos productivos completos.
